@@ -2,3 +2,9 @@
   sudo: yes
   apt: pkg={{ item }} state=latest
   with_items: php_packages
+
+- name: Configure xdebug
+  sudo: yes
+  template: src=xdebug.ini.tpl dest=/etc/php5/mods-available/xdebug.ini
+  when: php_packages | join(" ") | search('php5-xdebug')
+  notify: restart php5-fpm
